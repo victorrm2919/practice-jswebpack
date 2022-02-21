@@ -546,6 +546,25 @@ o hacer el llamado del script de development agregando el flag `--watch
 
 Para deplegar la configuracion a netlify se debera agregar un archivo de configuracion
 
--Crear el archivo `netlify.toml`
--En el archivo agregar lo siguiente
+- Crear el archivo `netlify.toml`
+- En el archivo agregar lo siguiente
+~~~
+    [build]
+    publish = "dist"
+    command = "npm run build"
+~~~
+
+- Se debera de tener declarado todas las dependencias necesarias para el proyecto en caso contrario se debera anexar en modo -D 
+- Si se tiene una configuracion de variables para entorno se debera hacer lo siguiente:
+    - Crear una carpeta `scripts`
+    - Crear el archivo para el script, `create-env.js`
+    - Crear el script, este script se encargara de crear y anexar la varible de entorno: 
+    ~~~
+    const fs = require('fs');
+
+    fs.writeFileSync('./.env','API=${process.env.API}\n')
+    ~~~
+    - En Netlify se debera realizar la configuracion de las variables, en editor de varibles se debera crear la variable reuqerida y asignando el valor.
+    - Anidar en el script de node el llamado del script para los env
+
 
