@@ -262,6 +262,8 @@ Agregar la regla a la seccion de `rules` con lo siguientes parametros
         type: 'asset/resource'
     }
 
+**Siempre y cuando sea JS el archivo que crea el HTML**
+
 En el archivo de js donde se ocupan los recursos se deberan importar las imagenes.
 
     import github from '../assets/images/github.png'
@@ -562,7 +564,7 @@ Para deplegar la configuracion a netlify se debera agregar un archivo de configu
     ~~~
     const fs = require('fs');
 
-    fs.writeFileSync('./.env','API=${process.env.API}\n')
+    fs.writeFileSync("./.env", `API=${process.env.API}\n`);
     ~~~
     - En Netlify se debera realizar la configuracion de las variables, en editor de varibles se debera crear la variable reuqerida y asignando el valor.
     - Anidar en el script de node el llamado del script para los env
