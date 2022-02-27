@@ -569,4 +569,79 @@ Para deplegar la configuracion a netlify se debera agregar un archivo de configu
     - En Netlify se debera realizar la configuracion de las variables, en editor de varibles se debera crear la variable reuqerida y asignando el valor.
     - Anidar en el script de node el llamado del script para los env
 
+---
 
+## Webpack Dev Server
+
+Trabajar con webpack en tiempo real y en un servidor de prueba local, un entorno de desarrollo local.
+
+### Instalacion via npm
+
+    npm i -D webpack-dev-server
+
+### Configuracion
+
+En el archivo de configuracion para desrrollo se añadira lo siguiente como una propiedad nueva de la configuracion.
+
+    devServer: {
+        static: path.join(__diname, "dist"),
+        compress: true,
+        historyApiFallback: true,
+        port: 3006,
+        open: true
+    },
+
+Se crea un script para inicializar esta configuracion al `package.json`
+
+    "start": "webpack serve --config webpack.config.dev.js"
+
+Ya no es necesario agregar `watch: true`, si lo tuviera, ya que el servidor de webpack lo prepara solo y activa el modo watch.
+
+---
+
+### Webpack Bundle Analyzer
+
+Cuando tenemos un proyecto es buena idea poder revisar su impacto en tamaño por ese motivo webpack nos ofrece un paquete para poder verificar y analizar el tamaño del bundle final
+
+### Instalacion via npm
+
+    npm i -D webpack-bundle-analyzer
+
+### Configuracion
+
+En el archivo de comfiguracion de webpack.dev se agregara el recurso con una constante
+
+    const BundleAnalyzerPlugin  = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+o
+
+    const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
+
+La constante se inicializa en el apartador de `plugins`
+
+    new BundleAnalyzerPlugin(),
+
+Para inicializar el proceso se debera realizar el analisis con el siguiente comando, esta informacion sera exportada para su visualizacion.
+
+    npx webpack --profile --json > stats.json
+
+Para visualizar las estadisticas
+
+    npx webpack-bundle-analyze stats.json
+
+---
+
+## Webpack DevTools
+
+El modo de Devtools nos permitira crear un mapa del codigo y poder leerlo a detalle, asi podremos analizarlo a detalle. Que es lo que se esta compilando.
+
+### Configuracion
+
+En el archivo de configuracion de webpack.dev añadir una nueva propiedad `devtool`
+
+    devtool: 'source-map',
+
+Correr el script de `dev`
+
+Ejecutamos npm run dev y vemos que abre el bundle analyzer que pudimos ver la clase pasada y ahora vemos que en la carpeta dist hay dos elementos, el main compilado y el archivo del mapa en json con la estructura de los elementos de la app.
+
+Cuando abrimos el proyecto e inspeccionamos algún elemento vamos a source y vemos nuestro main, aquí podremos ver todos los recursos de la app con sus particularidades, para facilitar el debuggeo usamos los mapas que el navegador detecta. Si queremos revisar a detalle una pieza de código solo le damos click y la aisla por nosotros.

@@ -3,9 +3,12 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const CopyPlugin = require('copy-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer')
+
 
 module.exports = {
     mode: 'development',
+    devtool: 'source-map',
     entry: './src/index.js', //Punto de entrada de la aplicacion
     output: {
         path: path.resolve(__dirname, 'dist'), //path donde se guarda el proyecto con webpack
@@ -67,5 +70,13 @@ module.exports = {
             ]
         }),
         new Dotenv(),
+        new BundleAnalyzerPlugin(),
     ],
+    devServer: {
+        static: path.join(__dirname, "dist"),
+        compress: true,
+        historyApiFallback: true,
+        port: 3006,
+        open: true
+    },
 };
